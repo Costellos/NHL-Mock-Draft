@@ -1,7 +1,11 @@
 <?php
+    if ($_GET['id']):
+        $pid = $_GET['id'];
+    endif;  
+
 include 'config/db.php';
 mysql_select_db($databaseName,$con);
-$result=mysql_query("select * from players",$con);
+$result=mysql_query("select * from players where id = $pid",$con);
 while($data = mysql_fetch_row($result)){
     $id =  $data[0];
     $name =  $data[1];

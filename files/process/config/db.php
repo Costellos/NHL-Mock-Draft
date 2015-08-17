@@ -1,9 +1,9 @@
 <?php 
   $host = "localhost";
-  //$user = "root";
-  //$pass = "20vision10";
-  $user = "nightma7";
-  $pass = "Jiggyfly1~";
+  $user = "root";
+  $pass = "20vision10";
+  //$user = "nightma7";
+  //$pass = "Jiggyfly1~";
   $databaseName = "nightma7_nhl_mock_draft";
 
 // SQL server connection information

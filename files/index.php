@@ -29,6 +29,9 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style type="text/css">
+    html {
+        overflow-y: scroll!important;
+    }
     .player_sidebar{
     }
     .page_con{
@@ -200,7 +203,7 @@
     <div id="clear-popup" class="white-popup mfp-hide">
         <h2>List Reset</h2>
         <p class="bg-danger">Are you sure you want to clear this list?</p>
-        <button type="button" class="close-reset-pop btn btn-default">Yes</button>
+        <button type="button" class="close-reset-pop close-reset-pop-yes btn btn-default ">Yes</button>
         <button type="button" class="close-reset-pop btn btn-default">No</button>
     </div>
 
@@ -238,7 +241,10 @@
               mainClass: 'mfp-fade'
             });
             $('.close-reset-pop').click(function() {
-              $.magnificPopup.close(); // Close popup that is currently opened (shorthand)
+                $.magnificPopup.close(); // Close popup that is currently opened (shorthand)
+            });
+            $('.close-reset-pop-yes').click(function(){
+                $("#my_player_list").empty();
             });
         } );
 
@@ -250,15 +256,38 @@
                 "columnDefs": [ {
                     "targets": -1,
                     "data": null,
-                    "defaultContent": "<button>Click!</button>"
+                    "defaultContent": "<button>+</button>"
                 } ]
             });
          
             $('#player-table tbody').on( 'click', 'button', function () {
                 var data = table.row( $(this).parents('tr') ).data();
-                alert( data[1] +"'s  Final Rank is: "+ data[2] );
+                $.ajax({    //create an ajax request to load_page.php
+                type: "GET",
+                url: "process/display_player.php",
+                data: { id: data[2] },             
+                dataType: "html",   //expect html to be returned                
+                success: function(response){                
+                    $("#my_player_list").append(response);
+                    alert( data[1] +" Has Been Added." );
+                    }   
+                });
             } );
         } );
+        $(document).on("click", ".player_remove", function() {
+            var player_id = $(this).closest('.well').attr('id');
+            $('#'+player_id).remove();
+        });
+        $(document).on("click", ".player_move_up", function() {
+            var player_id = $(this).closest('.well').attr('id');
+            var parent = $('#'+player_id);
+            var siblings = $(this).closest('.well').siblings();
+            alert(siblings);
+
+        });
+        $(document).on("click", ".player_move_down", function() {
+            var player_id = $(this).closest('.well').attr('id');
+        });
         $(document).ready(function() {
             $("#display").click(function() {            
 
