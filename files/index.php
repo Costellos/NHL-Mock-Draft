@@ -29,9 +29,7 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style type="text/css">
-    html {
-        overflow-y: scroll!important;
-    }
+    html{overflow-y:scroll;}
     .player_sidebar{
     }
     .page_con{
@@ -82,39 +80,7 @@
 
 <body>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">
-                    <img src="http://placehold.it/150x50&text=Logo" alt="">
-                </a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="#">Home</a>
-                    </li>
-                    <li>
-                        <a href="#">Blog</a>
-                    </li>
-                    <li>
-                        <a href="#">Contact</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
+    <?php include('parts/header.php');?>
 
     <!-- Page Content -->
     <div class="container">
@@ -198,7 +164,8 @@
     <div id="save-popup" class="white-popup mfp-hide">
         <h2>Saved</h2>
         <p class="bg-success">Your mock draft has been saved.</p>
-        <button type="button" class="close-reset-pop btn btn-primary">Continue</button>
+        <button type="button" class="close-reset-pop btn btn-primary">Continue Working</button>
+        <button type="button" class="continue_to_list close-reset-pop btn btn-primary">Continue To List</button>
     </div>
     <div id="clear-popup" class="white-popup mfp-hide">
         <h2>List Reset</h2>
@@ -235,16 +202,33 @@
             $('.popup-btn').magnificPopup({ 
               // Delay in milliseconds before popup is removed
               removalDelay: 300,
+              overflowY: 'scroll',
 
               // Class that is added to popup wrapper and background
               // make it unique to apply your CSS animations just to this exact popup
-              mainClass: 'mfp-fade'
+              mainClass: 'mfp-fade',
+              callbacks: {open: function() {$('.navbar-fixed-top').css('overflow-y', 'scroll');},close: function() {$('.navbar-fixed-top').css('overflow-y', 'hidden');}}
             });
             $('.close-reset-pop').click(function() {
-                $.magnificPopup.close(); // Close popup that is currently opened (shorthand)
+                $.magnificPopup.close(function() {
+                    $('html').css('overflow-y', 'scroll');
+                }); // Close popup that is currently opened (shorthand)
             });
             $('.close-reset-pop-yes').click(function(){
                 $("#my_player_list").empty();
+            });
+
+            $('.continue_to_list').click(function(){
+                var IDs = [];
+                $("#my_player_list").find('[id^="player_id_"]').each(function(){ IDs.push(this.id); });
+                $.ajax({    //create an ajax request to load_page.php
+                type: "GET",
+                url: "process/save_list.php",
+                data: { idArray: IDs },             
+                dataType: "html",   //expect html to be returned                
+                success: function(response){
+                }
+            });
             });
         } );
 
@@ -267,27 +251,51 @@
                 url: "process/display_player.php",
                 data: { id: data[2] },             
                 dataType: "html",   //expect html to be returned                
-                success: function(response){                
-                    $("#my_player_list").append(response);
-                    alert( data[1] +" Has Been Added." );
+                success: function(response){
+                    var player_id = $('#player_id_'+data[2]);
+                    if($(player_id).length == 0) {
+                      $("#my_player_list").append(response);
+                        alert( data[1] +" Has Been Added." );
+                    }else{
+                        alert( data[1] +" Is already in your list." );
+                    }          
                     }   
                 });
             } );
+            
         } );
+
         $(document).on("click", ".player_remove", function() {
             var player_id = $(this).closest('.well').attr('id');
             $('#'+player_id).remove();
+            alert('Player Removed');
         });
-        $(document).on("click", ".player_move_up", function() {
-            var player_id = $(this).closest('.well').attr('id');
-            var parent = $('#'+player_id);
-            var siblings = $(this).closest('.well').siblings();
-            alert(siblings);
 
+        $(document).on("click", ".player_move_up", function() {
+            var player_id_pre = $(this).closest('.well').attr('id');
+            var player_above_id_pre = $(this).closest('.well').prev('.well').attr('id');
+            var player_id = $('#'+player_id_pre);
+            var player_above_id = $('#'+player_above_id_pre);
+            if(player_above_id_pre !== undefined){
+                player_id.detach();
+                player_above_id.before(player_id);
+            }else{
+                alert('We cant move this player up. He is already at the top of the list');
+            }
         });
         $(document).on("click", ".player_move_down", function() {
-            var player_id = $(this).closest('.well').attr('id');
+            var player_id_pre = $(this).closest('.well').attr('id');
+            var player_before_id_pre = $(this).closest('.well').next('.well').attr('id');
+            var player_id = $('#'+player_id_pre);
+            var player_before_id = $('#'+player_before_id_pre);
+            if(player_before_id_pre !== undefined){
+                player_id.detach();
+                player_before_id.after(player_id);
+            }else{
+                alert('We cant move this player down. He is already at the bottom of the list');
+            }
         });
+
         $(document).ready(function() {
             $("#display").click(function() {            
 

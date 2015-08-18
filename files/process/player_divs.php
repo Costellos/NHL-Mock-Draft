@@ -27,7 +27,7 @@
                         <div><strong>Hometown: </strong><?php echo $hometown; ?></div>
                     </div>
                 </div>
-                <div class="player_stats">
+                <div class="player_stats hidden-xs">
                     <table class="table table-bordered table-striped">
                         <tr>
                             <th>Games Played</th>
