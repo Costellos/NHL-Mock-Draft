@@ -1,4 +1,4 @@
-<!-- Navigation -->
+    <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -9,7 +9,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="index.php">
                     <img src="http://placehold.it/150x50&text=Logo" alt="">
                 </a>
             </div>
@@ -31,3 +31,9 @@
         </div>
         <!-- /.container -->
     </nav>
+
+    <div class="container">
+        <div class="ad_block ad_block_header" id="ad_block_header">
+            <!-- Adscens Code Here -->
+        </div>
+    </div>

@@ -221,14 +221,12 @@
             $('.continue_to_list').click(function(){
                 var IDs = [];
                 $("#my_player_list").find('[id^="player_id_"]').each(function(){ IDs.push(this.id); });
-                $.ajax({    //create an ajax request to load_page.php
-                type: "GET",
-                url: "process/save_list.php",
-                data: { idArray: IDs },             
-                dataType: "html",   //expect html to be returned                
-                success: function(response){
+                if(IDs.length <1){
+                    alert('You dont have any players in your list');
+                }else{
+                    window.location = 'save.php?pids=' + IDs;
                 }
-            });
+                
             });
         } );
 

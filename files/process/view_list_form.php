@@ -2,15 +2,13 @@
 
 include('config/db.php');
 
-$url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
-if (strpos($url,'listid') !== false) {
-    $parts = parse_url($url);
-		parse_str($parts['query'], $query);
-		$url_listid = $query['listid'];
+
+	$form_listid = $_POST['listid'];
+
 
 		mysql_select_db($databaseName,$con);
-		$result=mysql_query("select * from list_urls where list_id = $url_listid",$con);
+		$result=mysql_query("select * from list_urls where list_id = $form_listid",$con);
 		while($data = mysql_fetch_row($result)){
 			$id =  $data[0];
 			$pid =  $data[1];
@@ -36,8 +34,10 @@ if (strpos($url,'listid') !== false) {
 				    $hometown =  $data[13];
 
 				include('player_divs.php');
-				}
 			}
 		}
-}
+	}
+
+
+
 ?>

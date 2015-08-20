@@ -81,35 +81,7 @@
 <body>
 
     <?php include('parts/header.php');?>
-
-    <!-- Page Content -->
-    <div class="container">
-        <a href="index.php" class="btn btn-primary">Make Your Own List</a>
-        <div class="row page_inner_con">
-            <div class="col-xs-12">
-                <div class="panel panel-primary">
-                  <div class="panel-heading">
-                    <h3 class="panel-title">View Draft List</h3>
-                  </div>
-                  <div class="panel-body">
-                    <div class="row">
-                      <div class="col-xs-12">
-                        <div class="input-group">
-                          <input id="view_list_from_id" type="text" class="form-control" placeholder="Enter your Draft List ID to see the list.">
-                          <span class="input-group-btn">
-                            <button class="view_list_from_id_btn btn btn-default" type="button">Go!</button>
-                          </span>
-                        </div><!-- /input-group -->
-                      </div><!-- /.col-lg-6 -->
-                    </div><!-- /.row -->
-                  </div>
-                </div>
-                <div class="my_player_list" id="my_player_list">
-                    <?php include('process/view_list.php'); ?>
-                </div>
-            </div>
-        </div>
-    </div>
+    <?php include('process/save_list.php'); ?>
 
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

@@ -20,4 +20,6 @@ while($data = mysql_fetch_row($result)){
 
 include('player_divs.php');
 
-}?>
+}
+$con->close();
+?>

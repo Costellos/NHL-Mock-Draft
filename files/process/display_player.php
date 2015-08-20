@@ -1,7 +1,7 @@
 <?php
     if ($_GET['id']):
         $pid = $_GET['id'];
-    endif;  
+    endif;
 
 include 'config/db.php';
 mysql_select_db($databaseName,$con);
@@ -23,5 +23,6 @@ while($data = mysql_fetch_row($result)){
     $hometown =  $data[13];
 
 include('player_divs.php');
+
 
 }?>
